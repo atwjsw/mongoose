@@ -1,0 +1,197 @@
+http://cnodejs.org/topic/504b4924e2b84515770103dd
+
+一、快速通道
+1.1 名词解释
+Schema ： 一种以文件形式存储的数据库模型骨架，不具备数据库的操作能力
+Model ： 由Schema发布生成的模型，具有抽象属性和对数据库的操作行为
+Entity ： 由Model创建的实体，他的操作也会影响数据库
+
+注意：
+1.本学习文档采用严格命名方式来区别不同对象，例如：
+    var PersonSchema;   //Person的文本属性
+    var PersonModel;    //Person的数据库模型
+    var PersonEntity;   //Person实体
+2.Schema、Model、Entity的关系请牢记，Schema生成Model，Model创造Entity，Model和Entity都可对数据库操作造成影响，但Model比Entity更具操作性。
+
+二、新手指引
+　　如果您还不清楚Mongoose是如何工作的，请参看第一章快速通道快速浏览他的用法吧
+
+1. Schema——纯洁的数据库原型
+1.1 什么是Schema
+我理解Schema仅仅只是一断代码，他书写完成后程序依然无法使用，更无法通往数据库端
+他仅仅只是数据库模型在程序片段中的一种表现，或者是数据属性模型
+
+1.2 如何定义Schema
+
+var BlogSchema = new Schema({
+    title:String,
+    author:String
+    //new Schema()中传入一个JSON对象，该对象形如 xxx:yyyy ,
+    /xxx是一个字符串，定义了属性，yyy是一个Schema.Type，定义了属性类型
+});
+
+1.3 什么是Schema.Type
+　　Schema.Type是由Mongoose内定的一些数据类型，基本数据类型都在其中，他也内置了一些Mongoose特有的Schema.Type。当然，你也可以自定义Schema.Type，只有满足Schema.Type的类型才能定义在Schema内。
+
+1.4 Schema.Types
+
+　　NodeJS中的基本数据类型都属于Schema.Type，另外Mongoose还定义了自己的类型
+    //举例：
+    var ExampleSchema = new Schema({
+      name:String,
+      binary:Buffer,
+      living:Boolean,
+      updated:Date,
+      age:Number,
+      mixed:Schema.Types.Mixed, //该混合类型等同于nested
+      _id:Schema.Types.ObjectId,  //主键
+      _fk:Schema.Types.ObjectId,  //外键
+      array:[],
+      arrOfString:[String],
+      arrOfNumber:[Number],
+      arrOfDate:[Date],
+      arrOfBuffer:[Buffer],
+      arrOfBoolean:[Boolean],
+      arrOfMixed:[Schema.Types.Mixed],
+      arrOfObjectId:[Schema.Types.ObjectId]
+      nested:{
+        stuff:String,
+      }
+    });
+
+1.5 关于Buffer
+- Buffer和ArrayBuffer是Nodejs两种隐藏的对象，相关内容请查看NodeJS-API
+
+1.6 关于Mixed
+- 混合类型因为没有特定约束，因此可以任意修改，一旦修改了原型，则必须调用markModified()
+
+    person.anything = {x:[3,4,{y:'change'}]}
+    person.markModified('anything');//传入anything，表示该属性类型发生变化
+    person.save();
+
+1.7 关于ObjectId
+
+　　主键，一种特殊而且非常重要的类型，每个Schema都会默认配置这个属性，属性名为_id，除非自己定义，方可覆盖
+
+1.8 关于Array
+
+　　Array在JavaScript编程语言中并不是数组，而是集合，因此里面可以存入不同的值，以下代码等价：
+
+    var ExampleSchema1 = new Schema({array:[]});
+    var ExampleSchema2 = new Schema({array:Array});
+    var ExampleSchema3 = new Schema({array:[Schema.Types.Mixed]});
+    var ExampleSchema4 = new Schema({array:[{}]});
+
+1.9 附言
+　　Schema不仅定义了文档结构和使用性能，还可以有扩展插件、实例方法、静态方法、复合索引、文档生命周期钩子
+　　Schema可以定义插件，并且插件具有良好的可拔插性，请有兴趣的读者继续往后阅读或者查阅官方资料。
+
+2. Schema的扩展
+2.1 实例方法
+　　有的时候，我们创造的Schema不仅要为后面的Model和Entity提供公共的属性，还要提供公共的方法。
+
+2.2 静态方法
+　　静态方法在Model层就能使用
+
+####2.3 索引
+
+索引或者复合索引能让搜索更加高效，默认索引就是主键索引ObjectId，属性名为_id， 索引会作为一个专题来讲解
+
+####2.4 虚拟属性
+
+Schema中如果定义了虚拟属性，那么该属性将不写入数据库
+
+####2.5 配置项
+
+在使用new Schema(config)时，我们可以追加一个参数options来配置Schema的配置，形如：
+
+var ExampleSchema = new Schema(config,options);
+
+可供配置项有：safe、strict、capped、versionKey、autoIndex (一般不要用)
+
+
+####5.1 什么是Model
+
+Model模型，是经过Schema构造来的，除了Schema定义的数据库骨架以外，还具有数据库行为模型，他相当于管理数据库属性、行为的类
+
+####5.2 如何创建Model
+
+你必须通过Schema来创建，如下：
+
+    //先创建Schema
+    var TankSchema = new Schema({
+      name:'String',
+      size:'String' 
+    });
+    //通过Schema创建Model
+    var TankModel = mongoose.model('Tank',TankSchema);
+
+####5.2 操作Model
+
+该模型就能直接拿来操作，具体查看API，例如：
+
+    var tank = {'something',size:'small'};
+    TankModel.create(tank);
+
+你可以使用Model来创建Entity，Entity实体是一个特有Model具体对象，但是他并不具备Model的方法，只能用自己的方法。
+
+####6.1 查询的方式
+
+通常有2种查询方式，一种是直接查询，一种是链式查询（2种查询都是自己命名的）
+
+#####6.1.1 直接查询
+
+在查询时带有回调函数的，称之为直接查询，查询的条件往往通过API来设定，例如：
+
+    PersonModel.findOne({'name.last':'dragon'},'some select',function(err,person){
+      //如果err==null，则person就能取到数据
+    });
+
+#####6.1.2 链式查询
+
+在查询时候，不带回调，而查询条件通过API函数来制定，例如：
+
+    var query = PersonModel.findOne({'name.last':'dragon'});
+    query.select('some select');
+    query.exec(function(err,pserson){
+    //如果err==null，则person就能取到数据
+  });
+
+####7.Validation
+
+数据的存储是需要验证的，不是什么数据都能往数据库里丢或者显示到客户端的，数据的验证需要记住以下规则：
+
+验证始终定义在SchemaType中
+验证是一个内部中间件
+验证是在一个Document被保存时默认启用的，除非你关闭验证
+验证是异步递归的，如果你的SubDoc验证失败，Document也将无法保存
+验证并不关心错误类型，而通过ValidationError这个对象可以访问
+
+####7.1 验证器
+
+required 非空验证
+min/max 范围验证（边值验证）
+enum/match 枚举验证/匹配验证
+validate 自定义验证规则
+
+###8.Middleware中间件
+
+####8.1 什么是中间件
+
+中间件是一种控制函数，类似插件，能控制流程中的init、validate、save、remove`方法
+
+串行使用pre方法，执行下一个方法使用next调用
+
+    var schema = new Schema(...);
+    schema.pre('save',function(next){
+      //做点什么
+      next();
+    });
+
+####8.3 中间件特点
+
+一旦定义了中间件，就会在全部中间件执行完后执行其他操作，使用中间件可以雾化模型，避免异步操作的层层迭代嵌套
+
+#connections
+- mongoose.connect('mongodb://localhost/myapp');
+- mongoose.connect('mongodb://username:password@host:port/database?options...');

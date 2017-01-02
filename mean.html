@@ -1,0 +1,271 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=1024" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="description" content="main topic about Mongodb,expressjs,angularjs,nondejs" />
+  <meta name="author" content="朱德龙" />
+  <title>MEAN技术培训</title>
+  <link href="css/impress-demo.css" rel="stylesheet" />
+  <link rel="shortcut icon" href="favicon.png" />
+  <link rel="apple-touch-icon" href="apple-touch-icon.png" />
+</head>
+
+<body class="impress-not-supported">
+  <div class="fallback-message">
+    <p>Your browser <b>doesn't support the features required</b> by impress.js, so you are presented with a simplified version of this presentation.</p>
+    <p>For the best experience please use the latest <b>Chrome</b>, <b>Safari</b> or <b>Firefox</b> browser.</p>
+  </div>
+  <div id="impress">
+    <div id="bored" class="step slide" data-x="0" data-y="0">
+      <img src="img/meanjs.jpg" alt="meanjs">
+      <q>
+        <ul>
+          <li>MongoDB</li>
+          <li>Expressjs</li>
+          <li>AngularJS</li>
+          <li>Node.js</li>
+        </ul>
+      </q>
+    </div>
+    <div class="step slide" data-x="1000" data-y="0">
+    <img src="img/mongodb.jpg" alt="mongodb" width="100%" height="100%">
+    </div>
+    <div class="step slide" data-x="2000" data-y="0">
+      <q>
+        <b>关系数据库</b>
+        <ul>
+          <li>范式设计:二维。</li> 
+          <li>消除依赖，有利于原子操作。</li>
+          <li>增加关联，查询需要多张表来获得所需要的全部数据。</li>
+        </ul>
+      </q>
+    </div>
+    <div class="step slide" data-x="3000" data-y="0">
+      <q>
+        <b> 文档型数据库 </b>
+        <ul>
+          <li>key-value</li>
+          <li>可嵌套的数据集合</li>
+          <li>增加了数据冗余</li>
+          <li>提升查询性能</li>
+        </ul>
+      </q>
+    </div>
+    <div class="step slide" data-x="4000" data-y="0">
+      <q>
+        <b>BSON结构的document</b>
+        <img src="img/bson.png" alt="bson">
+      </q>
+    </div>
+    <div class="step slide" data-x="4000" data-y="1000">
+      <b> SQL与mongodb概念对比 </b>
+      <table>
+          <thead>
+              <th>SQL</th>
+              <th>MongoDB</th>
+          </thead>
+          <tbody>
+              <tr>
+                  <td>database</td>
+                  <td>database</td>
+              </tr>
+              <tr>
+                  <td>table</td>
+                  <td>collection</td>
+              </tr>
+              <tr>
+                  <td>row</td>
+                  <td>document</td>
+              </tr>
+              <tr>
+                  <td>column</td>
+                  <td>field</td>
+              </tr>
+              <tr>
+                  <td>index</td>
+                  <td>index</td>
+              </tr>
+              <tr>
+                  <td>table joins</td>
+                  <td>embedded documents and linking</td>
+              </tr>
+              <tr>
+                  <td>primary key<br>Specify any unique column or column combination as primary key.</td>
+                  <td>primary key<br>In MongoDB, the primary key is automatically set to the _id field.</td>
+              </tr>
+              <tr>
+                  <td>aggregation (e.g. group by)</td>
+                  <td>aggregation pipeline</td>
+              </tr>
+          </tbody>
+      </table>
+    </div>
+    <div class="step slide" data-x="3000" data-y="1000">
+      <b>SQL与mongodb的操作对比</b>
+      <img src="img/sql.png" alt="sql">
+    </div>
+    <div class="step slide" data-x="2000" data-y="1000">
+      <img src="img/node.jpg" alt="nodejs" width="100%" height="100%">
+    </div>
+    <div class="step slide" data-x="1000" data-y="1000">
+        <p>基于Chrome's V8 JavaScript引擎的运行环境,事件驱动,非阻塞I/O模型</p>
+        <img src="img/task-driven.png" alt="">
+        <img src="img/event-driven.png" alt="">
+    </div>
+    <div class="step slide" data-x="0" data-y="1000">
+        <b>npm(node.js package manager)</b><br>
+        <small>the largest ecosystem of open source libraries in the world.</small>
+        <img src="img/npm.png" alt="npm" width="100%">
+    </div>
+    <div class="step slide" data-x="0" data-y="2000">
+      <img src="img/package.png" alt="package"  height="100%">
+    </div>
+    <div class="step slide" data-x="1000" data-y="2000">
+      <q>
+        <b>重要模块</b>
+        <ul>
+          <li>fs</li>
+          <li>http/https</li>
+          <li>process</li>
+          <li>cluster</li>
+          <li>...</li>
+        </ul>
+      </q>
+    </div>
+    <div class="step slide" data-x="2000" data-y="2000">
+      <b>服务器示例</b>
+      <img src="img/server.png" alt="" width="100%">
+    </div>
+    <div class="step slide" data-x="3000" data-y="2000">
+      <img src="img/express.png" alt="" width="100%">
+    </div>
+    <div class="step slide" data-x="4000" data-y="2000">
+      <q>
+        <b>快速</b><br>
+        <img src="img/express-init.png" alt="" width="100%">
+      </q>
+    </div>
+    <div class="step slide" data-x="4000" data-y="3000">
+      <q>
+        <b>开放</b><br>
+        <img src="img/express-middleware.png" alt="" width="100%">
+      </q>
+    </div>
+    <div class="step slide" data-x="3000" data-y="3000">
+      <q>
+        <b>极简</b><br>
+        <img src="img/express-project.png" alt="" width="80%">
+      </q>
+    </div>
+    <div class="step slide" data-x="2000" data-y="3000">
+      <q>
+        <b>基本结构</b>
+        <ul>
+          <li>路由</li>
+          <li>模板引擎</li>
+          <li>中间件</li>
+        </ul>
+      </q>
+    </div>
+    <div class="step slide" data-x="1000" data-y="3000">
+      <q>
+        <b>类似框架</b>
+        <ul>
+          <li>koajs</li>
+          <li>thinkjs</li>
+        </ul>
+      </q>
+    </div>
+    <div class="step slide" data-x="0" data-y="3000">
+      <q>
+        <img src="img/angular.png" alt="" width="100%">
+      </q>
+    </div>
+    <div class="step slide" data-x="0" data-y="4000">
+      <q>
+        <b>简介</b>
+        <ul>
+          <li>web应用框架，扩展HTML语法</li>
+          <li>高级别的抽象，适用CRUD应用</li>
+          <li>游戏和图形编辑器都是密集和复杂的DOM操作的应用实例</li>
+        </ul>
+      </q>
+    </div>
+    <div class="step slide" data-x="1000" data-y="4000">
+      <q>
+        <b>简介</b>
+        <ul>
+          <li>html弊端：适合静态文档/页面</li>
+          <li>解决方案：javascript处理动效/交互</li>
+          <li>方案弊端：频繁dom操作——>开发效率低、容易出错</li>
+        </ul>
+      </q>
+    </div>
+    <div class="step slide" data-x="2000" data-y="4000">
+      <q>
+        <ul>
+          <li>依赖注入：降低耦合性，利于单元测试</li>
+          <li>模块化：利于代码维护</li>
+          <li>双向数据绑定：利于操作dom</li>
+          <li>指令：增强html</li>
+        </ul>
+      </q>
+    </div>
+    <div class="step slide" data-x="3000" data-y="4000">
+      <q>
+        <b>MVC(Model-View-Controller)</b><br>
+        <img src="img/angular-mvc.png" alt="" width="80%">
+      </q>
+    </div>
+    <div class="step slide" data-x="4000" data-y="4000">
+      <q>
+        <b>MVVM(Model-View-ViewModel)</b><br>
+        <img src="img/angular-mvvm.png" alt="" width="80%">
+      </q>
+    </div>
+    <div class="step slide" data-x="4000" data-y="5000">
+      <q>
+        <b>MVW(Model-View-Whatever)</b><br>
+        <img src="img/angular-mvw.png" alt="" width="100%">
+      </q>
+    </div>
+    <div class="step slide" data-x="3000" data-y="5000">
+      <q>
+        <b>类似框架</b><br>
+        <img src="img/vue.png" alt="vue.js" width="20%">
+        <img src="img/avalon.png" alt="avalon.js">
+      </q>
+    </div>
+    <div class="step slide" data-x="2000" data-y="5000">
+      <q>
+        why mean.js?
+        <ul>
+          <li>一种开发语言：javascript</li>
+          <li>一种数据格式：JSON</li>
+          <li>多种选择方案</li>
+        </ul>
+      </q>
+    </div>
+    <div id="overview" class="step" data-x="3000" data-y="1500" data-scale="10"> </div>
+  </div>
+  <div class="hint">
+    <p>按下空格或方向键开始</p>
+  </div>
+  <script>
+  if ("ontouchstart" in document.documentElement) {
+    document.querySelector(".hint").innerHTML = "<p>Tap on the left or right to navigate</p>";
+  }
+  </script>
+  <script src="js/impress.js"></script>
+  <script>
+  /*global impress*/
+  impress().init();
+  impress().showPage();
+  impress().showProgress();
+  </script>
+</body>
+
+</html>

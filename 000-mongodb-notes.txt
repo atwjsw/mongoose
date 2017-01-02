@@ -1,0 +1,397 @@
+#NoSQL 简介
+
+- NoSQL，指的是非关系型的数据库。NoSQL有时也称作Not Only SQL的缩写，是对不同于传统的关系型数据库的数据库管理系统的统称。
+- NoSQL用于超大规模数据的存储。（例如谷歌或Facebook每天为他们的用户收集万亿比特的数据）。这些类型的数据存储不需要固定的模式，无需多余操作就可以横向扩展。
+
+#为什么使用NoSQL ?
+
+今天我们可以通过第三方平台（如：Google,Facebook等）可以很容易的访问和抓取数据。用户的个人信息，社交网络，地理位置，用户生成的数据和用户操作日志已经成倍的增加。我们如果要对这些用户数据进行挖掘，那SQL数据库已经不适合这些应用了, NoSQL数据库的发展也却能很好的处理这些大的数据。
+
+#RDBMS vs NoSQL
+
+#RDBMS
+- 高度组织化结构化数据
+- 结构化查询语言（SQL） (SQL)
+- 数据和关系都存储在单独的表中。
+- 数据操纵语言，数据定义语言
+- 严格的一致性
+- 基础事务
+
+#NoSQL
+- 代表着不仅仅是SQL
+- 没有声明性查询语言
+- 没有预定义的模式
+-键 - 值对存储，列存储，文档存储，图形数据库
+- 最终一致性，而非ACID属性
+- 非结构化和不可预知的数据
+- CAP定理
+- 高性能，高可用性和可伸缩性
+
+#什么是MongoDB ?
+MongoDB 是由C++语言编写的，是一个基于分布式文件存储的开源数据库系统。
+在高负载的情况下，添加更多的节点，可以保证服务器性能。
+MongoDB 旨在为WEB应用提供可扩展的高性能数据存储解决方案。
+MongoDB 将数据存储为一个文档，数据结构由键值(key=>value)对组成。MongoDB 文档类似于 JSON 对象。字段值可以包含其他文档，数组及文档数组。
+
+#数据库
+一个mongodb中可以建立多个数据库。
+MongoDB的默认数据库为"db"，该数据库存储在data目录中。
+MongoDB的单个实例可以容纳多个独立的数据库，每一个都有自己的集合和权限，不同的数据库也放置在不同的文件中。
+"show dbs" 命令可以显示所有数据的列表。
+
+#文档
+文档是一个键值(key-value)对(即BSON)。MongoDB 的文档不需要设置相同的字段，并且相同的字段不需要相同的数据类型，这与关系型数据库有很大的区别，也是 MongoDB 非常突出的特点。
+一个简单的文档例子如下：
+{"site":"www.runoob.com", "name":"菜鸟教程"}
+
+#集合
+集合就是 MongoDB 文档组，类似于 RDBMS （关系数据库管理系统：Relational Database Management System)中的表格。
+集合存在于数据库中，集合没有固定的结构，这意味着你在对集合可以插入不同格式和类型的数据，但通常情况下我们插入集合的数据都会有一定的关联性。
+比如，我们可以将以下不同数据结构的文档插入到集合中：
+{"site":"www.baidu.com"}
+{"site":"www.google.com","name":"Google"}
+{"site":"www.runoob.com","name":"菜鸟教程","num":5}
+
+#capped collections
+Capped collections 就是固定大小的collection。
+它有很高的性能以及队列过期的特性(过期按照插入的顺序). 有点和 "RRD" 概念类似。
+Capped collections是高性能自动的维护对象的插入顺序。它非常适合类似记录日志的功能 和标准的collection不同，你必须要显式的创建一个capped collection， 指定一个collection的大小，单位是字节。collection的数据存储空间值提前分配的。
+要注意的是指定的存储大小包含了数据库的头信息。
+
+#通过shell连接MongoDB服务
+你可以通过执行以下命令来连接MongoDB的服务。
+注意：localhost为主机名，这个选项是必须的：
+mongodb://localhost
+
+#MongoDB连接命令格式
+使用用户名和密码连接到MongoDB服务器，你必须使用 'username:password@hostname/dbname' 格式，'username'为用户名，'password' 为密码。
+使用用户名和密码连接登陆到默认数据库：
+mongodb://admin:123456@localhost/
+
+mongodb://[username:password@]host1[:port1][,host2[:port2],...[,hostN[:portN]]][/[database][?options]]
+
+#MongoDB 创建数据库
+- use DATABASE_NAME: 创建数据库
+- show dbs: 查看所有数据库
+- db.runoob.insert({"name":"菜鸟教程"}); //刚创建的数据库 runoob 并不在数据库的列表中，要显示它，我们需要向 runoob 数据库插入一些数据。
+- db.dropDatabase(); //删除当前数据库，
+- db.collection.drop(); //删除集合
+
+#MongoDB 插入文档
+- 文档的数据结构和JSON基本一样。
+- 所有存储在集合中的数据都是BSON格式。
+- BSON是一种类json的一种二进制形式的存储格式,简称Binary JSON。
+- 使用 insert() 或 save() 方法向集合中插入文档，语法如下：
+- db.COLLECTION_NAME.insert(document)
+- db.col.find(); //查看已插入文档：
+- document = {...} //我们也可以将数据定义为一个变量，
+- db.col.insert(document) //再插入变量
+- db.col.save(document) // 插入文档你也可以使用此命令。如果不指定 _id 字段 save() 方法类似于 insert() 方法。如果指定 _id 字段，则会更新该 _id 的数据。
+
+document = {
+        "_id" : ObjectId("583da0b424f26ddf57c42a84"),
+        "title" : "MongoDB 教程123",
+        "description" : "MongoDB 是一个 Nosql 数据库123",
+        "by" : "菜鸟教程123",
+        "url" : "http://www.runoob.com",
+        "tags" : [
+                "mongodb",
+                "database",
+                "NoSQL"
+        ],
+        "likes" : 100
+}
+
+#MongoDB 更新文档
+MongoDB 使用 update() 和 save() 方法来更新集合中的文档。接下来让我们详细来看下两个函数的应用及其区别。
+
+#update() 方法
+update() 方法用于更新已存在的文档。语法格式如下：
+db.collection.update(
+   <query>,
+   <update>,
+   {
+     upsert: <boolean>,
+     multi: <boolean>,
+     writeConcern: <document>
+   }
+)
+
+参数说明：
+query : update的查询条件，类似sql update查询内where后面的。
+update : update的对象和一些更新的操作符（如$,$inc...）等，也可以理解为sql update查询内set后面的
+upsert : 可选，这个参数的意思是，如果不存在update的记录，是否插入objNew,true为插入，默认是false，不插入。
+multi : 可选，mongodb 默认是false,只更新找到的第一条记录，如果这个参数为true,就把按条件查出来多条记录全部更新。
+writeConcern :可选，抛出异常的级别。
+
+e.g.
+db.col.update({'title':'MongoDB 教程'},{$set:{'title':'MongoDB'}})
+
+#save() 方法
+save() 方法通过传入的文档来替换已有文档。语法格式如下：
+db.collection.save(
+   <document>,
+   {
+     writeConcern: <document>
+   }
+)
+参数说明：
+document : 文档数据。
+writeConcern :可选，抛出异常的级别。
+
+
+
+#MongoDB 删除文档
+
+- remove()函数是用来移除集合中的数据。
+- MongoDB数据更新可以使用update()函数。在执行remove()函数前先执行find()命令来判断执行的条件是否正确，这是一个比较好的习惯。
+
+#remove语法
+- db.collection.remove(
+   <query>,
+   {
+     justOne: <boolean>,
+     writeConcern: <document>
+   }
+)
+
+参数说明：
+query :（可选）删除的文档的条件。
+justOne : （可选）如果设为 true 或 1，则只删除一个文档。
+writeConcern :（可选）抛出异常的级别。
+e.g.
+- db.col.remove({'title':'MongoDB 教程'})
+- db.COLLECTION_NAME.remove(DELETION_CRITERIA,1)； //只想删除第一条找到的记录可以设置 justOne 为 1
+- db.col.remove({})； //删除所有数据，
+
+#MongoDB 查询文档
+- db.COLLECTION_NAME.find()； //基本语法
+- db.col.find().pretty() //格式化查看
+- db.col.findOne(); //只返回一个文档。
+
+#MongoDB 与 RDBMS Where 语句比较
+如果你熟悉常规的 SQL 数据，通过下表可以更好的理解 MongoDB 的条件语句查询：
+
+等于		{<key>:<value>}			db.col.find({"by":"菜鸟教程"}).pretty()		where by = '菜鸟教程'
+小于		{<key>:{$lt:<value>}}	db.col.find({"likes":{$lt:50}}).pretty()	where likes < 50
+小于或等于	{<key>:{$lte:<value>}}	db.col.find({"likes":{$lte:50}}).pretty()	where likes <= 50
+大于		{<key>:{$gt:<value>}}	db.col.find({"likes":{$gt:50}}).pretty()	where likes > 50
+大于或等于	{<key>:{$gte:<value>}}	db.col.find({"likes":{$gte:50}}).pretty()	where likes >= 50
+不等于		{<key>:{$ne:<value>}}	db.col.find({"likes":{$ne:50}}).pretty()	where likes != 50
+
+#MongoDB AND 条件
+MongoDB 的 find() 方法可以传入多个键(key)，每个键(key)以逗号隔开，即常规 SQL 的 AND 条件。
+- db.col.find({key1:value1, key2:value2}).pretty()
+- db.col.find({"by":"菜鸟教程", "title":"MongoDB 教程"}).pretty()
+
+MongoDB OR 条件
+MongoDB OR 条件语句使用了关键字 $or,语法格式如下：
+- db.col.find(
+   {
+      $or: [
+	     {key1: value1}, {key2:value2}
+      ]
+   }
+).pretty()
+- db.col.find({$or:[{"by":"菜鸟教程"},{"title": "MongoDB 教程"}]}).pretty()
+
+AND 和 OR 联合使用
+- 以下实例演示了 AND 和 OR 联合使用，类似常规 SQL 语句为： 'where likes>50 AND (by = '菜鸟教程' OR title = 'MongoDB 教程')'
+- db.col.find({"likes": {$gt:50}, $or: [{"by": "菜鸟教程"},{"title": "MongoDB 教程"}]}).pretty()
+
+#条件操作符
+- 条件操作符用于比较两个表达式并从mongoDB集合中获取数据。
+
+#MongoDB中条件操作符有：
+(>) 大于 - $gt： db.col.find({"likes" : {$gt : 100}})
+(<) 小于 - $lt：db.col.find({likes : {$lt : 150}})
+(>=) 大于等于 - $gte： db.col.find({likes : {$gte : 100}})
+(<= ) 小于等于 - $lte： db.col.find({likes : {$lte : 150}})
+$lt 和 $gt：db.col.find({likes : {$lt :200, $gt : 100}})
+
+#$type 操作符
+- 基于BSON类型来检索集合中匹配的数据类型
+获取 "col" 集合中 title 为 String 的数据：db.col.find({"title" : {$type : 2}})
+
+#Limit() 方法
+在MongoDB中读取指定数量的数据记录，使用MongoDB的Limit方法，limit()方法接受一个数字参数，该参数指定从MongoDB中读取的记录条数。
+- db.col.find().limit(2)
+- db.col.find({},{"title":1,_id:0}).limit(2)
+
+#Skip() 方法
+使用skip()方法来跳过指定数量的数据，skip方法同样接受一个数字参数作为跳过的记录条数。
+- db.col.find({},{"title":1,_id:0}).limit(1).skip(1)
+
+#sort()方法
+- 在MongoDB中使用使用sort()方法对数据进行排序，sort()方法可以通过参数指定排序的字段，
+- 并使用 1 和 -1 来指定排序的方式，其中 1 为升序排列，而-1是用于降序排列
+- db.col.find({},{"title":1,_id:0,likes:1}).sort({"likes":-1}) //col 集合中的数据按字段 likes 的降序排列
+
+#MongoDB 索引
+索引通常能够极大的提高查询的效率，如果没有索引，MongoDB在读取数据时必须扫描集合中的每个文件并选取那些符合查询条件的记录。
+这种扫描全集合的查询效率是非常低的，特别在处理大量的数据时，查询可以要花费几十秒甚至几分钟，这对网站的性能是非常致命的。
+索引是特殊的数据结构，索引存储在一个易于遍历读取的数据集合中，索引是对数据库表中一列或多列的值进行排序的一种结构
+
+#ensureIndex() 方法
+MongoDB使用 ensureIndex() 方法来创建索引。
+- db.col.ensureIndex({"title":1})
+
+#aggregate() 方法
+MongoDB中聚合的方法使用aggregate()。
+主要用于处理数据(诸如统计平均值,求和等)，并返回计算后的数据结果。有点类似sql语句中的 count(*)。
+- db.col.aggregate([{$group : {_id : "$by_user", num_tutorial : {$sum : 1}}}])
+- db.col.aggregate([{$group : {_id : "$by_user", num_tutorial : {$avg : "$likes"}}}])
+- db.col.aggregate([{$group : {_id : "$by_user", num_tutorial : {$min : "$likes"}}}])
+- db.col.aggregate([{$group : {_id : "$by_user", url : {$push: "$url"}}}]) //在结果文档中插入值到一个数组中。
+- db.col.aggregate([{$group : {_id : "$by_user", url : {$addToSet : "$url"}}}]) //在结果文档中插入值到一个数组中, 不重复
+- db.col.aggregate([{$group : {_id : "$by_user", first_url : {$first : "$url"}}}]) //根据资源文档的排序获取第一个文档数据。
+- db.col.aggregate([{$group : {_id : "$by_user", last_url : {$last : "$url"}}}]) //根据资源文档的排序获取最后一个文档数据
+
+#管道的概念
+- 管道在Unix和Linux中一般用于将当前命令的输出结果作为下一个命令的参数。
+- MongoDB的聚合管道将MongoDB文档在一个管道处理完毕后将结果传递给下一个管道处理。管道操作是可以重复的。
+- 表达式：处理输入文档并输出。表达式是无状态的，只能用于计算当前聚合管道的文档，不能处理其它的文档。
+$match实例
+db.articles.aggregate( [
+                        { $match : { score : { $gt : 70, $lte : 90 } } },
+                        { $group: { _id: null, count: { $sum: 1 } } }
+                       ] );
+$match用于获取分数大于70小于或等于90记录，然后将符合条件的记录送到下一阶段$group管道操作符进行处理。
+
+#MongoDB 复制（副本集）
+MongoDB复制是将数据同步在多个服务器的过程。
+复制提供了数据的冗余备份，并在多个服务器上存储数据副本，提高了数据的可用性， 并可以保证数据的安全性。
+复制还允许您从硬件故障和服务中断中恢复数据。
+
+#MongoDB复制原理
+mongodb的复制至少需要两个节点。其中一个是主节点，负责处理客户端请求，其余的都是从节点，负责复制主节点上的数据。
+mongodb各个节点常见的搭配方式为：一主一从、一主多从。
+主节点记录在其上的所有操作oplog，从节点定期轮询主节点获取这些操作，然后对自己的数据副本执行这些操作，从而保证从节点的数据与主节点一致。
+
+mongod --port 27017 --dbpath "D:\set up\mongodb\data" --replSet rs0
+rs.add("mongod1.net:27017")
+
+#分片
+在Mongodb里面存在另一种集群，就是分片技术,可以满足MongoDB数据量大量增长的需求。
+当MongoDB存储海量的数据时，一台机器可能不足以存储数据，也可能不足以提供可接受的读写吞吐量。这时，我们就可以通过在多台机器上分割数据，使得数据库系统能存储和处理更多的数据。
+
+#MongoDB 关系
+MongoDB 的关系表示多个文档之间在逻辑上的相互联系。
+文档间可以通过嵌入和引用来建立联系。
+MongoDB 中的关系可以是：
+1:1 (1对1)
+1: N (1对多)
+N: 1 (多对1)
+N: N (多对多)
+
+#嵌入式关系
+使用嵌入式方法，我们可以把用户地址嵌入到用户的文档中：
+以上数据保存在单一的文档中，可以比较容易的获取和维护数据。
+这种数据结构的缺点是，如果用户和用户地址在不断增加，数据量不断变大，会影响读写性能。
+
+#引用式关系
+引用式关系是设计数据库时经常用到的方法，这种方法把用户数据文档和用户地址数据文档分开，通过引用文档的 id 字段来建立关系。
+我们可以读取这些用户地址的对象id（ObjectId）来获取用户的详细地址信息。
+这种方法需要两次查询，第一次查询用户地址的对象id（ObjectId），第二次通过查询的id获取用户的详细地址信息。
+
+#MongoDB 数据库引用
+在上一章节MongoDB关系中我们提到了MongoDB的引用来规范数据结构文档。
+MongoDB 引用有两种：
+手动引用（Manual References）
+
+#DBRef的形式：{ $ref : , $id : , $db :  }
+三个字段表示的意义为：
+$ref：集合名称
+$id：引用的id
+$db:数据库名称，可选参数
+
+#MongoDB 覆盖索引查询
+- 由于所有出现在查询中的字段是索引的一部分， MongoDB 无需在整个数据文档中检索匹配查询条件和返回使用相同索引的查询结果。
+- 因为索引存在于RAM中，从索引中获取数据比通过扫描文档读取数据要快得多。
+
+- 在 users 集合中创建联合索引，字段为 gender 和 user_name :
+- db.users.ensureIndex({gender:1,user_name:1})
+- 现在，该索引会覆盖以下查询：
+- db.users.find({gender:"M"},{user_name:1,_id:0})
+也就是说，对于上述查询，MongoDB的不会去数据库文件中查找。相反，它会从索引中提取数据，这是非常快速的数据查询。
+由于我们的索引中不包括 _id 字段，_id在查询中会默认返回，我们可以在MongoDB的查询结果集中排除它。
+下面的实例没有排除_id，查询就不会被覆盖：
+- db.users.find({gender:"M"},{user_name:1})
+
+#explain()
+explain 操作提供了查询信息，使用索引及查询统计等。有利于我们对索引的优化。
+
+#hint()
+虽然MongoDB查询优化器一般工作的很不错，但是也可以使用hints来强迫MongoDB使用一个指定的索引。
+
+#MongoDB 原子操作
+- mongodb不支持事务，所以，在你的项目中应用时，要注意这点。无论什么设计，都不要要求mongodb保证数据的完整性。
+- 但是mongodb提供了许多原子操作，比如文档的保存，修改，删除等，都是原子操作。
+- 所谓原子操作就是要么这个文档保存到Mongodb，要么没有保存到Mongodb，不会出现查询到的文档没有保存完整的情况。
+
+原子操作常用命令
+{ $set : { field : value } } //用来指定一个键并更新键值，若键不存在并创建。
+{ $inc : { field : value } } //对文档的某个值为数字型（只能为满足要求的数字）的键进行增减的操作。
+{ $push : { field : value } } //把value追加到field里面去，field一定要是数组类型才行，如果field不存在，会新增一个数组类型加进去。
+{ $pushAll : { field : value_array } } //$pull同$push,只是一次可以追加多个值到一个数组字段内。
+{ $pull : { field : _value } } //从数组field内删除一个等于value值。
+$addToSet //增加一个值到数组内，而且只有当这个值不在数组内才增加。
+{ $pop : { field : 1 } } //删除数组的第一个或最后一个元素
+{ $rename : { old_field_name : new_field_name } } //修改字段名称
+{$bit : { field : {and : 5}}} //位操作，integer类型
+
+#额外开销
+每个索引占据一定的存储空间，在进行插入，更新和删除操作时也需要对索引进行操作。所以，如果你很少对集合进行读取操作，建议不使用索引。
+
+#内存(RAM)使用
+由于索引是存储在内存(RAM)中,你应该确保该索引的大小不超过内存的限制。
+如果索引的大小大于内存的限制，MongoDB会删除一些索引，这将导致性能下降。
+
+#最大范围
+集合中索引不能超过64个
+索引名的长度不能超过125个字符
+一个复合索引最多可以有31个字段
+
+#ObjectId
+ObjectId 是一个12字节 BSON 
+- 类型数据，有以下格式：前4个字节表示时间戳；接下来的3个字节是机器标识码；紧接的两个字节由进程id组成（PID）；
+最后三个字节是随机数。
+- MongoDB中存储的文档必须有一个"_id"键。这个键的值可以是任何类型的，默认是个ObjectId对象。
+- 在一个集合里面，每个文档都有唯一的"_id"值，来确保集合里面每个文档都能被唯一标识。
+- MongoDB采用ObjectId，而不是其他比较常规的做法（比如自动增加的主键）的主要原因，因为在多个 服务器上同步自动增加主键值既费力还费时。
+- newObjectId = ObjectId() //创建新的ObjectId
+- ObjectId("583fb037accecf92caee86e9").getTimeStamp() //ISODate("2016-12-01T05:08:07Z")
+- new ObjectId().str //5349b4ddd2781d08c09890f3；将ObjectId转换为字符串格式
+
+#MongoDB Map Reduce
+Map-Reduce是一种计算模型，简单的说就是将大批量的工作（数据）分解（MAP）执行，然后再将结果合并成最终结果（REDUCE）。
+MongoDB提供的Map-Reduce非常灵活，对于大规模数据分析也相当实用。
+
+#MongoDB 全文检索
+全文检索对每一个词建立一个索引，指明该词在文章中出现的次数和位置，当用户查询时，检索程序就根据事先建立的索引进行查找，并将查找的结果反馈给用户的检索方式。
+- db.posts.ensureIndex({post_text:"text"}) //对 post_text 字段建立全文索引，这样我们可以搜索文章内的内容
+- db.posts.find({$text:{$search:"w3cschool.cc"}}) //搜索文章中的关键词w3cschool.cc：
+- db.posts.getIndexes() //查找索引名
+- db.posts.dropIndex("post_text_text") //本例的索引名为post_text_text，执行以下命令来删除索引
+
+#MongoDB 正则表达式
+正则表达式是使用单个字符串来描述、匹配一系列符合某个句法规则的字符串。
+许多程序设计语言都支持利用正则表达式进行字符串操作。
+MongoDB 使用 $regex 操作符来设置匹配字符串的正则表达式。
+MongoDB使用PCRE (Perl Compatible Regular Expression) 作为正则表达式语言。
+不同于全文检索，我们使用正则表达式不需要做任何配置。
+- db.posts.find({post_text:{$regex:"w3cschool.cc"}}) //使用正则表达式查找包含 w3cschool.cc 字符串的文章
+- db.posts.find({post_text:/w3cschool.cc/}) //也可以写为这样
+- db.posts.find({post_text:{$regex:"w3cschool.cc",$options:"$i"}}) //查找不区分大小写的字符串 w3cschool.cc
+
+#数组元素使用正则表达式
+我们还可以在数组字段中使用正则表达式来查找内容。 这在标签的实现上非常有用，如果你需要查找包含以 tutorial 开头的标签数据
+- db.posts.find({tags:{$regex:"tutorial"}}) //查找包含以 tutorial 开头的标签数据
+
+#MongoDB 固定集合（Capped Collections）
+MongoDB 固定集合（Capped Collections）是性能出色且有着固定大小的集合，对于大小固定，我们可以想象其就像一个环形队列，当集合空间用完后，再插入的元素就会覆盖最初始的头部的元素！
+
+#MongoDB 自动增长
+MongoDB 没有像 SQL 一样有自动增长的功能， MongoDB 的 _id 是系统自动生成的12字节唯一标识。
+但在某些情况下，我们可能需要实现 ObjectId 自动增长功能。
+由于 MongoDB 没有实现这个功能，我们可以通过编程的方式来实现
